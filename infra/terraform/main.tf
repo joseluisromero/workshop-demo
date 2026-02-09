@@ -111,3 +111,12 @@ resource "aws_cloudwatch_log_group" "lambda_log_group" {
   name              = "/aws/lambda/${local.lambda_name}"
   retention_in_days = 7
 }
+
+resource "aws_lambda_permission" "allow_public_function_url" {
+  statement_id           = "AllowPublicFunctionUrl"
+  action                 = "lambda:InvokeFunctionUrl"
+  function_name          = aws_lambda_function.sqs_sender.function_name
+  principal              = "*"
+  function_url_auth_type = "NONE"
+  source_arn             = "arn:aws:lambda:us-east-1:959713283002:function:workshop-demo-joromero-sqs-sender"
+}

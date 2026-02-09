@@ -41,20 +41,28 @@ def handler(event, context):
             # Parsear los datos del formulario
             params = parse_form_data(body)
             
-            # Validar campos obligatorios
-            if not params.get('email') or not params.get('products'):
+            # Validar campos obligatorios: Email y products
+            email = params.get('email', '').strip()
+            products = params.get('products', '').strip()
+            if not email or not products:
                 return {
                     'statusCode': 400,
                     'headers': {'Content-Type': 'text/html; charset=utf-8'},
                     'body': get_html_form(error='Los campos Email y Productos son obligatorios')
                 }
-            
-            # Crear el mensaje en formato JSON
+
+            # (Opcional) validación básica de formato de email
+            if '@' not in email or email.startswith('@') or email.endswith('@'):
+                return {
+                    'statusCode': 400,
+                    'headers': {'Content-Type': 'text/html; charset=utf-8'},
+                    'body': get_html_form(error='Ingrese una dirección de Email válida')
+                }
+
+            # Crear el mensaje en formato JSON (solo email y products)
             message = {
-                'email': params.get('email'),
-                'products': params.get('products'),
-                'customerName': params.get('customerName', ''),
-                'amount': float(params.get('amount', 0))
+                'email': email,
+                'products': products
             }
             
             # Enviar mensaje a SQS
@@ -280,19 +288,7 @@ def get_html_form(error=None, success=False, message_id=None):
                         required
                     >
                 </div>
-                
-                <div class="form-group">
-                    <label for="customerName">
-                        Nombre del Cliente
-                    </label>
-                    <input 
-                        type="text" 
-                        id="customerName" 
-                        name="customerName" 
-                        placeholder="Juan Pérez"
-                    >
-                </div>
-                
+
                 <div class="form-group">
                     <label for="products">
                         Productos <span class="required">*</span>
@@ -304,21 +300,7 @@ def get_html_form(error=None, success=False, message_id=None):
                         required
                     ></textarea>
                 </div>
-                
-                <div class="form-group">
-                    <label for="amount">
-                        Monto (USD)
-                    </label>
-                    <input 
-                        type="number" 
-                        id="amount" 
-                        name="amount" 
-                        placeholder="0.00"
-                        step="0.01"
-                        min="0"
-                    >
-                </div>
-                
+
                 <button type="submit">🚀 Enviar Mensaje a SQS</button>
             </form>
             
