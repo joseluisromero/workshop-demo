@@ -1,0 +1,15 @@
+# Terraform variables file
+# IMPORTANTE: No subir este archivo a git - ya está en .gitignore
+
+# Credenciales de AWS - Usuario de servicio
+aws_access_key = "TU_ACCESS_KEY_AQUI"
+aws_secret_key = "TU_SECRET_KEY_AQUI"
+
+# Región de AWS
+aws_region = "us-east-1"
+
+# Nombre de la cola SQS existente
+sqs_queue_name = "workshop-demo-queue"
+
+# Prefijo para nombrar recursos
+project_prefix = "workshop-demo-joromero"
