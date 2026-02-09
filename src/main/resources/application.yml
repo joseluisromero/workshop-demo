@@ -1,0 +1,34 @@
+aws:
+  credentials:
+    access-key: ${AWS_ACCESS_KEY_ID:1234}
+    secret-key: ${AWS_SECRET_ACCESS_KEY:1234}
+  region:
+    static: ${AWS_REGION:us-east-1}
+  sqs:
+    queue-name: ${SQS_QUEUE_NAME:workshop-demo-queue}
+    #queue-url: ${SQS_QUEUE_URL:https://sqs.us-east-1.amazonaws.com/959713283002/worshop-demo}
+    queue-url: ${SQS_QUEUE_URL:https://sqs.us-east-1.amazonaws.com/959713283002/workshop-demo-queue}
+    enabled: true
+  s3:
+    bucket-name: ${S3_BUCKET_NAME:workshop-demo-jlromero}
+    invoice-prefix: ${S3_INVOICE_PREFIX:invoices}
+  sns:
+    topic-arn: ${SNS_TOPIC_ARN:arn:aws:sns:us-east-1:959713283002:workshop-demo-topic}
+
+spring:
+  application:
+    name: workshop-demo
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://zztqjdixc6emunoehh2xp765ve.dsql.us-east-1.on.aws:5432/postgres}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:1334}
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: never  # No crear objetos de BD
+
+logging:
+  level:
+    root: INFO
+    com.example.aws.workshop: DEBUG
+    io.awspring.cloud: DEBUG
